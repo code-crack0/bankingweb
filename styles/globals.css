@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+#family1 {
+    background-image: url('../public/family1.jpg');
+    height: 100vh;
+    box-shadow: inset 0 0 0 2000px rgba(26, 24, 25, 0.3);
+}
+
+#family2 {
+    background-image: url('../public/family2.jpg');
+    height: 100vh;
+    box-shadow: inset 0 0 0 2000px rgba(26, 24, 25, 0.3);
+}
+
+#family3 {
+    background-image: url('../public/family3.jpg');
+    height: 100vh;
+    box-shadow: inset 0 0 0 2000px rgba(26, 24, 25, 0.3);
+}
+#credit_card{
+    background-image: url('../public/credit_card.jpg');
+    height:40vh;
+}

@@ -23,3 +23,10 @@
     background-image: url('../public/credit_card.jpg');
     height:40vh;
 }
+#transfer-dropdown-menu {
+    display: none;
+}
+
+#transfer-dropdown-btn:focus+#transfer-dropdown-menu {
+    display: block;
+}

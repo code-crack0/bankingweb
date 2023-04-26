@@ -20,12 +20,12 @@ export default function Home() {
     // Clean up function to clear the timeout if component unmounts
     return () => clearTimeout(loadingTimeout);
   }, []);
-
+  const heading = 'Welcome back Client';
   return (
     <div className='flex flex-row'>
       <Sidebar />
       <main className='bg-gray-100 min-h-screen flex-grow flex flex-col'>
-        <Header />
+        <Header text={heading} />
         {isLoading ? (
           <div className='flex justify-center items-center h-screen'>
             <CircularProgress />

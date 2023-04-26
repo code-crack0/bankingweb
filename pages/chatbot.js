@@ -1,3 +1,4 @@
+import Sidebar from "@/components/Sidebar";
 import { useState } from "react";
 
 export default function ChatBot() {
@@ -19,11 +20,12 @@ export default function ChatBot() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <header className="bg-blue-900 text-white py-4">
-        <h1 className="text-center text-2xl font-bold">Banking Chat Bot</h1>
+    <div className="flex flex-row">
+      <Sidebar/>
+      <main className="bg-gray-100 min-h-screen flex-grow flex flex-col">
+        <header className="bg-blue-900 text-white py-4">
+        <h1 className="text-center text-xl font-bold">Banking Chat Bot</h1>
       </header>
-      <div className="max-w-screen-lg mx-auto p-4 flex flex-col justify-between min-h-[90vh]">
         <div className="flex-grow overflow-y-scroll p-4 bg-gray-200 rounded-md">
           {messages.map((message, index) => (
             <div
@@ -46,12 +48,12 @@ export default function ChatBot() {
           />
           <button
             type="submit"
-            className="bg-blue-900 text-white rounded-md py-2 px-4 ml-4 font-bold hover:bg-blue-700"
+            className="bg-blue-900 text-white rounded-md py-1 px-4 ml-4 font-bold hover:bg-blue-700"
           >
             Send
           </button>
         </form>
-      </div>
+      </main>
     </div>
   );
 }

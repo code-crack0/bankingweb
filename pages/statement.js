@@ -5,37 +5,42 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useState,useEffect } from 'react';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { CircularProgress } from '@mui/material';
+import { getdebits } from '@/API_CALLS/Statement/getdebits';
+import { getcredits } from '@/API_CALLS/Statement/getcredits';
 const columns = [
   { field: 'id', headerName: 'ID', width: 100 },
   { field: 'date', headerName: 'Date', width: 150 },
-  { field: 'description', headerName: 'Description', width: 300 },
+  { field: 'title', headerName: 'Title', width: 300 },
   { field: 'amount', headerName: 'Amount', width: 150 },
 ];
 
-const rows = [
-  { id: 1, date: '2023-04-01', description: 'Groceries', amount: '$50.00',cardtype:'Credit' },
-  { id: 2, date: '2023-04-02', description: 'Gasoline', amount: '$30.00',cardtype:'Debit' },
-  { id: 3, date: '2023-04-03', description: 'Dinner', amount: '$40.00',cardtype:'Credit' },
-  { id: 4, date: '2023-04-01', description: 'Groceries', amount: '$50.00',cardtype:'Debit' },
-  { id: 5, date: '2023-04-02', description: 'Gasoline', amount: '$30.00' ,cardtype:'Credit'},
-  { id: 6, date: '2023-04-03', description: 'Dinner', amount: '$40.00',cardtype:'Debit' },
-  { id: 7, date: '2023-04-01', description: 'Groceries', amount: '$50.00', cardtype:'Credit' },
-  { id: 8, date: '2023-04-02', description: 'Gasoline', amount: '$30.00',cardtype:'Debit' },
-  { id: 9, date: '2023-04-03', description: 'Dinner', amount: '$40.00',cardtype:'Credit' },
-  { id: 10, date: '2023-04-01', description: 'Groceries', amount: '$50.00',cardtype:'Debit' },
-  { id: 11, date: '2023-04-02', description: 'Gasoline', amount: '$30.00',cardtype:'Credit' },
-  { id: 12, date: '2023-04-03', description: 'Dinner', amount: '$40.00',cardtype:'Debit' },
-];
+
 
 const BankStatement = () => {
   const heading1 = 'Statement of Account';
   const dropdownOptions = ['Credit', 'Debit'];
   const [selectedOption, setSelectedOption] = useState('');
+  const [debits, setDebits] = useState([]);
+  const [credits,setCredits] = useState([]);
   const [cardtype,setCardtype] = useState('Credit');
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
     setCardtype(event.target.value);
   };
+  useEffect(() => {
+    getdebits().then((data) => {
+      setDebits(data);
+    });
+    getcredits().then((data) => {
+      setCredits(data);
+    }
+    );
+
+
+  }, []);
+
+
+
   useEffect(() => {
     // Simulating content loaded
     const loadingTimeout = setTimeout(() => {
@@ -74,7 +79,7 @@ const BankStatement = () => {
             </Select>
           </FormControl>
         </Grid>
-        <DataGrid rows={rows.filter(row => row.cardtype == cardtype)} columns={columns} checkboxSelection/>
+        <DataGrid rows={cardtype == 'Debit' ? debits : credits} columns={columns} checkboxSelection/>
           </>
         )}
       </main>

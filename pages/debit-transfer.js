@@ -11,8 +11,16 @@ import { useState, useEffect } from "react";
 import { NativeSelect, InputLabel } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import { Checkbox } from "@mui/material";
-
+import { senddebittransfer } from "@/API_CALLS/debit-transfer/senddebittransfer";
+import postbeneficiary from "@/API_CALLS/debit-transfer/postbeneficiary";
+import { getbeneficiary } from "@/API_CALLS/debit-transfer/getbeneficiary";
 const debit = () => {
+  useEffect(() => {
+    getbeneficiary().then((data) => {
+      setBeneficiary(data);
+    });
+  }, []);
+
   const style = {
     position: "absolute",
     top: "50%",
@@ -24,30 +32,18 @@ const debit = () => {
     boxShadow: 24,
     p: 4,
   };
-  const beneficiary = [
-    {
-      id: 1,
-      name: "John Doe",
-      iban: "123456789012345678901234",
-      address: "1234 Main St, Anytown, USA",
-    },
-    {
-      id: 2,
-      name: "Jane Doe",
-      iban: "123456789012345678901282",
-      address: "1234 Main St, Anytown, USA",
-    },
-    {
-      id: 3,
-      name: "Julie Doe",
-      iban: "123456789012345678901290",
-      address: "1234 Main St, Anytown, USA",
-    },
-  ];
+  const [beneficiary, setBeneficiary] = useState([]);
   const [modal, setModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [checked, setChecked] = useState(false);
   const [date, setDate] = useState(null);
+  const [beneficiaryId, setBeneficiaryId] = useState(null);
+  const [amount, setAmount] = useState(null);
+  const [isinstallment, setIsinstallment] = useState(false);
+  const [duedate, setDuedate] = useState(null);
+  const [title, setTitle] = useState(null);
+  const [newbeneficiary, setNewbeneficiary] = useState(false);
+  const [newiban, setNewiban] = useState(null);
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
@@ -71,6 +67,27 @@ const debit = () => {
     // Clean up function to clear the timeout if component unmounts
     return () => clearTimeout(loadingTimeout);
   }, []);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    senddebittransfer({
+      beneficiaryId,
+      amount,
+      isinstallment,
+      duedate,
+      title,
+    });
+    router.refresh();
+
+  };
+  const handleNewMember = (e) => {
+    e.preventDefault();
+    postbeneficiary({ newbeneficiary, newiban });
+    router.refresh();
+  };
+  
+
+
+
   return (
     <div className="flex flex-row">
       <Sidebar />
@@ -129,7 +146,8 @@ const debit = () => {
                   class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
                   id="grid-amount"
                   type="text"
-                  placeholder="Enter the debit title"
+                    placeholder="Enter the debit title"
+                    onChange={(e) => setTitle(e.target.value)}
                 />
               </div>
               <div class="-mx-3 md:flex mb-6 w-1/2 flex flex-row justify-center">
@@ -146,7 +164,8 @@ const debit = () => {
                       inputProps={{
                         name: "age",
                         id: "uncontrolled-native",
-                      }}
+                        }}
+                        onChange={(e) => setBeneficiaryId(e.target.value)}
                     >
                       {beneficiary.map((beneficiary) => (
                         <option value={beneficiary.iban}>
@@ -176,7 +195,8 @@ const debit = () => {
                         <input
                           type="text"
                           placeholder="Enter Account Name"
-                          className="p-2"
+                            className="p-2"
+                            onChange={(e) => setNewbeneficiary(e.target.value)}
                         />
                         <Typography variant="h6" component="h2">
                           Enter IBAN
@@ -184,12 +204,14 @@ const debit = () => {
                         <input
                           type="text"
                           placeholder="Enter IBAN"
-                          className="p-2"
+                            className="p-2"
+                            onChange={(e) => setNewiban(e.target.value)}
                         />
                         <Button
                           variant="h6"
                           component="h2"
-                          className="p-2 mt-2"
+                            className="p-2 mt-2"
+                            onClick={handlenewMember}
                         >
                           Submit
                         </Button>
@@ -227,7 +249,8 @@ const debit = () => {
                   class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
                   id="grid-amount"
                   type="text"
-                  placeholder="Enter the amount"
+                    placeholder="Enter the amount"
+                    onChange={(e) => setAmount(e.target.value)}
                 />
               </div>
 
@@ -264,9 +287,10 @@ const debit = () => {
                   </Modal>
                 ) : null}
               </div>
-              <button
+              <button onClick={handleSubmit}
                 class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                type="submit"
+                  type="submit"
+                  onClick={handleSubmit}
               >
                 Submit
               </button>
@@ -276,5 +300,6 @@ const debit = () => {
       </main>
     </div>
   );
-};
+  };
+  
 export default debit;

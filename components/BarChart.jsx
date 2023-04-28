@@ -19,20 +19,23 @@ ChartJS.register(
   Legend
 );
 
-const BarChart = () => {
+const BarChart = ({chart}) => {
   const [chartData, setChartData] = useState({
     datasets: [],
   });
-
+  let data1 = []
+  chart.map((item) => data1.push(item.amount))
+  let data2 = []
+  chart.map((item) => data2.push(item.name))
   const [chartOptions, setChartOptions] = useState({});
 
   useEffect(() => {
     setChartData({
-        labels: ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'],
+        labels: data2,
         datasets: [
             {
                 label: 'Sales $',
-                data: [18127, 22201, 19490, 17938, 24182, 17842, 22475],
+                data:data1,
                 borderColor: 'rgb(53, 162, 235)',
                 backgroundColor: 'rgb(53, 162, 235, 0.4',
               }, 

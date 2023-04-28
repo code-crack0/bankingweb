@@ -18,3 +18,4 @@ const transfers = [
         date: "2021-01-01",
     },
 ]
+export default transfers;

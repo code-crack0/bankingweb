@@ -1,6 +1,6 @@
 import Sidebar from "@/components/Sidebar";
 import { useState } from "react";
-
+import { sendChatbotMessage } from "@/API_CALLS/chatbot/sendchatbotmessage";
 export default function ChatBot() {
   const [messages, setMessages] = useState([
     { text: "Hi, how can I help you today?", sender: "bot" },
@@ -9,15 +9,14 @@ export default function ChatBot() {
 
   const handleMessageSubmit = (e) => {
     e.preventDefault();
-    if (inputValue.trim()) {
-      setMessages([
-        ...messages,
-        { text: inputValue, sender: "user" },
-        { text: "Sorry, I didn't understand. Can you please rephrase?", sender: "bot" },
-      ]);
+    sendChatbotMessage(inputValue).then((data) => {
+      setMessages([...messages,...[ { text: inputValue, sender: "user" },{ text: data, sender: "bot" }]]);
+      //setMessages([...messages, { text: data, sender: "bot" }]);
       setInputValue("");
     }
+    );
   };
+
 
   return (
     <div className="flex flex-row">

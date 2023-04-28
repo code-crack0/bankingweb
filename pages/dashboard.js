@@ -20,7 +20,7 @@ export default function Home() {
     // Clean up function to clear the timeout if component unmounts
     return () => clearTimeout(loadingTimeout);
   }, []);
-  const heading = 'Welcome back Client';
+  const heading = 'Welcome back Jack';
   return (
     <div className='flex flex-row'>
       <Sidebar />

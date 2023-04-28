@@ -14,7 +14,7 @@ const Navbar = () => {
       id="home"
       className="flex justify-between items-center h-24 max-w-[1240px] mx-auto px-2 text-white text-xl"
     >
-      <h1 className="w-full text-3xl font-bold text-[#00df9a]">IEEE BANK.</h1>
+      <h1 className="w-full text-3xl font-bold text-[#00df9a]">BASTION BANK.</h1>
       <ul className="hidden md:flex">
         <li className="p-3 hover:border-b-2 cursor-pointer border-[#00df9a] hover:scale-105 ">
           <AnchorLink href="#home">
